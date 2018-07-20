@@ -4,10 +4,10 @@
 
 ## Related Projects
 
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+  - https://github.com/viamis/similar-products
+  - https://github.com/viamis/photo-gallery-module
+  - https://github.com/viamis/amazon-service-tk
+  - https://github.com/viamis/review-module
 
 ## Table of Contents
 
