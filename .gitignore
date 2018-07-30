@@ -1,0 +1,10 @@
+**/node_modules
+LICENSE
+.DS_Store
+package-lock.json
+package.json
+STYLE-GUIDE.md
+client/dist/bundle.js
+.babelrc
+.eslintignore
+.eslintrc.js
