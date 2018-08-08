@@ -2,9 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const mysql = require('mysql');
+const model = require('../dB/model.js');
 
 const app = express();
-const port = 3001;
+const port = 3005;
 
 const con = mysql.createConnection({
   user: 'root',
@@ -17,21 +18,27 @@ app.use(express.static('client'));
 
 // get
 app.get('/products', function(req, res) {
-  con.connect(err => {
+  // con.connect(err => {
+  //   if (err) {
+  //     console.log('Error connecting to MySql');
+  //     return;
+  //   }
+  //   console.log('Connected to database');
+  // });
+  // const getQuery = 'SELECT * FROM products';
+  // con.query(getQuery, function(err, result) {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     console.log('Query successful', result);
+  //     res.send(result);
+  //   }
+  // });
+  model.getData((err, data) => {
     if (err) {
-      console.log('Error connecting to MySql');
-      return;
-    }
-    console.log('Connected to database');
-  });
-
-  const getQuery = 'SELECT * FROM products';
-  con.query(getQuery, function(err, result) {
-    if (err) {
-      console.log(err);
+      res.status(500).send(err);
     } else {
-      console.log('Query successful', result);
-      res.send(result);
+      res.status(200).send(data);
     }
   });
 });
