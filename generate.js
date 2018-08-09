@@ -1,7 +1,6 @@
 // generate data as array of objects [{}, {}]
 // data fields -> id, name, url, name, rating, reviews, price, isPrime
-const faker = require('faker');
-
+const AWS = 'https://s3-us-west-1.amazonaws.com/hamazon-product-images/';
 const RANDOM_BOOLEAN = [true, false];
 const DATA_SIZE = 10;
 
@@ -11,7 +10,7 @@ const generateData = (size) => {
     const dataItem = {};
     dataItem.id = i;
     dataItem.name = `hamazon${i}`;
-    dataItem.url = faker.image.avatar();
+    dataItem.url = `${AWS}${Math.floor(Math.random() * 10)}.jpeg`;
     dataItem.rating = (Math.random() * 5).toFixed(1);
     dataItem.reviews = Math.floor(Math.random() * 500);
     dataItem.price = (Math.random() * 1000).toFixed(2);
