@@ -19,10 +19,10 @@ An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 - npm
 
 ## API Documentation
-GET: '/products'
-POST: '/products'
-PUT: '/productst'
-DELETE: '/products'
+- GET: '/products'
+- POST: '/products'
+- PUT: '/productst'
+- DELETE: '/products'
 
 
 ### Installing Dependencies
