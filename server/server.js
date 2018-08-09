@@ -18,22 +18,6 @@ app.use(express.static('client'));
 
 // get
 app.get('/products', function(req, res) {
-  // con.connect(err => {
-  //   if (err) {
-  //     console.log('Error connecting to MySql');
-  //     return;
-  //   }
-  //   console.log('Connected to database');
-  // });
-  // const getQuery = 'SELECT * FROM products';
-  // con.query(getQuery, function(err, result) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     console.log('Query successful', result);
-  //     res.send(result);
-  //   }
-  // });
   model.getData((err, data) => {
     if (err) {
       res.status(500).send(err);
@@ -45,20 +29,48 @@ app.get('/products', function(req, res) {
 
 app.post('/products', function(req, res) {
   // post
+  const { url, name, rating, reviews, price, isPrime } = req.body;
+  model.postData(
+    ([url, name, rating, reviews, price, isPrime],
+    (err, data) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.sendStatus(200);
+      }
+    })
+  );
+});
 
-  //
-  let input = [
-    '2nd - Nintendo+Switch+Gray.jpg',
-    '2nd - Nintendo Switch - Gray Joy-Con',
-    4.5,
-    4209,
-    299.0,
-    true
-  ];
+app.put('/products', function(req, res) {
+  const { id, url, name, rating, reviews, price, isPrime } = req.body;
+  model.updateByID(
+    id,
+    url,
+    name,
+    rating,
+    reviews,
+    price,
+    isPrime,
+    (err, result) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.status(200).send('PUT request to homepage');
+      }
+    }
+  );
+});
 
-  const postQuery =
-    'INSERT INTO products (url, name, rating, reviews, price, isPrime) VALUES (?, ?, ?, ?, ?, ?)';
-  con.query(postQuery, function(err, result) {});
+app.delete('/products', function(req, res) {
+  const id = req.body.id;
+  model.deleteByID(id, (err, result) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.status(200).send('DELETE request to homepage');
+    }
+  });
 });
 
 app.listen(port, () => {
