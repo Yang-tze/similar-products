@@ -1,6 +1,6 @@
-# Project Name
+# Yangt-ze
 
-> Project description
+> Product page of an online shopping 
 
 ## Related Projects
 
@@ -9,31 +9,30 @@
   - https://github.com/viamis/amazon-service-tk
   - https://github.com/viamis/review-module
 
-## Table of Contents
-
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-
-## Usage
-
-> Some usage instructions
 
 ## Requirements
 
 An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
 - Node 6.13.0
-- etc
+- MySQL
+- npm
 
-## Development
+## API Documentation
+GET: '/products'
+POST: '/products'
+PUT: '/productst'
+DELETE: '/products'
+
 
 ### Installing Dependencies
 
 From within the root directory:
+- Navigate to root directory
+- Run npm install 
 
-```sh
-npm install -g webpack
-npm install
-```
+To run dev enviroment/webpack:
+- Run npm build 
 
+To run server:
+- Run npm start
