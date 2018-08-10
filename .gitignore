@@ -1,6 +1,6 @@
 **/node_modules
 randomData.csv
-
+**/data 
 LICENSE
 .DS_Store
 package-lock.json
