@@ -11,3 +11,4 @@ client/dist/bundle.js
 .babelrc
 .eslintignore
 .eslintrc.js
+newrelic.js

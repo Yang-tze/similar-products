@@ -1,3 +1,4 @@
+require('newrelic');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -9,6 +10,7 @@ const model = require('../dB/postgres/model.js');
 
 const app = express();
 const port = 3005;
+app.set('port', port);
 
 app.get('/', function(req, res) {
   res.redirect('/1');
@@ -27,18 +29,14 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.get('/:id', function(req, res) {
   model.getRelatedProducts(req.params.id, (err, data) => {
     if (err) {
+      console.log('getting error', req.params.id);
       res.status(500).send(err);
     } else {
+      console.log('here', req.params.id);
       res.status(200).send(data);
     }
   });
 });
-
-// app.get('/:id', function(req, res) {
-//   const htmlPath = path.join(__dirname, '../client/index.html');
-//   console.log('path', htmlPath);
-//   res.sendFile(htmlPath);
-// });
 
 app.listen(port, () => {
   console.log(`server running at: http://localhost:${port}`);

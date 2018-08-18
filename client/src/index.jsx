@@ -31,7 +31,7 @@ class App extends React.Component {
     axios
       .get(`/${id}`)
       .then((response) => {
-        console.log('ozge data', response.data);
+        console.log('ozge data', id);
         self.data = response.data;
         const products = response.data.slice(self.index, self.index + self.size);
         self.setState({ products });
