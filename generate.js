@@ -5,13 +5,13 @@ const fs = require('fs');
 const AWS = 'https://s3-us-west-1.amazonaws.com/hamazon-product-images/';
 const RANDOM_BOOLEAN = [true, false];
 const DATA_BASE = 1000000;
-const TIMES = 10;
+const NO_OF_CHUNKS = 10;
 const COLS = ['id', 'name', 'url', 'rating', 'reviews', 'price', 'isPrime'];
 
 const ltrs = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 const generateName = (index, length) => {
   let result = '';
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < length; i += 1) {
     result += ltrs[index % 10];
     index = Math.floor(index / 10);
   }
@@ -32,14 +32,14 @@ const createDataItem = (index) => {
 
 const generateData = (start, end) => {
   const dataArr = [];
-  for (let i = start + 1; i <= end; i++) {
+  for (let i = start + 1; i <= end; i += 1) {
     dataArr.push(Object.values(createDataItem(i)));
   }
   return dataArr.join('\n');
 };
 
-const generateCSV = (base, times) => {
-  for (let i = 0; i < times; i++) {
+const generateSimilarProducts = (base, times) => {
+  for (let i = 0; i < times; i += 1) {
     const dataArr = [COLS.join(',')];
     dataArr.push(generateData(i * base, (i + 1) * base));
     const data = dataArr.join('\n');
@@ -53,4 +53,4 @@ const generateCSV = (base, times) => {
   }
 };
 
-generateCSV(DATA_BASE, TIMES);
+generateSimilarProducts(DATA_BASE, NO_OF_CHUNKS);

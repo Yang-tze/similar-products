@@ -26,9 +26,10 @@ class App extends React.Component {
   }
 
   getProducts() {
+    const id = parseInt(window.location.pathname.split('/').pop());
     const self = this;
     axios
-      .get('/products')
+      .get(`/${id}`)
       .then((response) => {
         console.log('ozge data', response.data);
         self.data = response.data;
