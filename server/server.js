@@ -2,17 +2,18 @@ require('newrelic');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-//mysql
+const redis = require('../dB/postgres/redisConnection.js');
+// mysql
 // const model = require('../dB/mysql/model.js');
-//postgres
+// postgres
 const model = require('../dB/postgres/model.js');
-//cassandra
+// cassandra
 
 const app = express();
 const port = 3005;
 app.set('port', port);
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.redirect('/1');
 });
 
@@ -25,22 +26,43 @@ app.use(express.static(path.join(__dirname, '../client')));
 //   res.sendFile(htmlPath);
 // });
 
-// get;
-app.get('/:id', function(req, res) {
-  model.getRelatedProducts(req.params.id, (err, data) => {
-    if (err) {
-      console.log('getting error', req.params.id);
-      res.status(500).send(err);
+const getCache = (req, res) => {
+  redis.get(req.params.id, (err, result) => {
+    if (result) {
+      // console.log('inside redis', result);
+      res.send(result);
     } else {
-      console.log('here', req.params.id);
-      res.status(200).send(data);
+      model.getRelatedProductsByID(req.params.id, (error, data) => {
+        if (error) {
+          res.status(500).send(error);
+        } else {
+          res.status(200).send(data);
+        }
+      });
     }
   });
-});
+};
+
+// get
+app.get('/:id', getCache);
 
 app.listen(port, () => {
   console.log(`server running at: http://localhost:${port}`);
 });
+
+// get;
+
+// app.get('/:id', function(req, res) {
+//   model.getRelatedProducts(req.params.id, (err, data) => {
+//     if (err) {
+//       console.log('getting error', req.params.id);
+//       res.status(500).send(err);
+//     } else {
+//       console.log('here', req.params.id);
+//       res.status(200).send(data);
+//     }
+//   });
+// });
 
 // get
 // app.get('/products', function(req, res) {
