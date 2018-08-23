@@ -1,0 +1,11 @@
+id,name,url,rating,reviews,price,isPrime
+1,aaaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/8.jpeg,3.1,62,607.58,false
+2,baaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/3.jpeg,1.7,50,394.57,true
+3,caaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/4.jpeg,2.5,282,737.01,false
+4,daaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/8.jpeg,1.4,376,856.63,false
+5,eaaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/5.jpeg,0.5,337,475.42,true
+6,faaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/3.jpeg,1.5,179,239.99,false
+7,gaaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/2.jpeg,0.9,232,74.79,false
+8,haaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/8.jpeg,2.4,451,548.16,false
+9,iaaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/5.jpeg,1.1,83,121.97,true
+10,jaaaaaa,https://s3-us-west-1.amazonaws.com/hamazon-product-images/0.jpeg,1.8,457,559.17,true

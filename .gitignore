@@ -1,6 +1,7 @@
 **/node_modules
-randomData.csv
+**/randomData.csv
 **/data 
+**/passwords.js
 LICENSE
 .DS_Store
 package-lock.json
@@ -10,3 +11,4 @@ client/dist/bundle.js
 .babelrc
 .eslintignore
 .eslintrc.js
+newrelic.js

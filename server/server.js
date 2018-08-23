@@ -1,78 +1,82 @@
+require('newrelic');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const mysql = require('mysql');
-const model = require('../dB/model.js');
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
+const redis = require('../dB/postgres/redisConnection.js');
+
+// mysql
+// const model = require('../dB/mysql/model.js');
+// postgres
+const model = require('../dB/postgres/model.js');
 
 const app = express();
 const port = 3005;
 
-const con = mysql.createConnection({
-  user: 'root',
-  password: '',
-  database: 'similarProducts'
-});
+if (cluster.isMaster) {
+  for (let i = 0; i < numCPUs; i += 1) {
+    cluster.fork();
+  }
 
-app.use(bodyParser.json());
-app.use(express.static('client'));
-
-// get
-app.get('/products', function(req, res) {
-  model.getData((err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(200).send(data);
-    }
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
   });
-});
+} else {
+  app.set('port', port);
 
-app.post('/products', function(req, res) {
-  // post
-  const { url, name, rating, reviews, price, isPrime } = req.body;
-  model.postData(
-    ([url, name, rating, reviews, price, isPrime],
-    (err, data) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.sendStatus(200);
-      }
-    })
-  );
-});
-
-app.put('/products', function(req, res) {
-  const { id, url, name, rating, reviews, price, isPrime } = req.body;
-  model.updateByID(
-    id,
-    url,
-    name,
-    rating,
-    reviews,
-    price,
-    isPrime,
-    (err, result) => {
-      if (err) {
-        res.sendStatus(500);
-      } else {
-        res.status(200).send('PUT request to homepage');
-      }
-    }
-  );
-});
-
-app.delete('/products', function(req, res) {
-  const id = req.body.id;
-  model.deleteByID(id, (err, result) => {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.status(200).send('DELETE request to homepage');
-    }
+  app.get('/', (req, res) => {
+    res.redirect('/1');
   });
-});
 
-app.listen(port, () => {
-  console.log(`server running at: http://localhost:${port}`);
-});
+  app.use(bodyParser.json());
+  app.use(express.static(path.join(__dirname, '../client')));
+
+  // app.get('/:id', function(req, res) {
+  //   const htmlPath = path.join(__dirname, '../client/index.html');
+  //   console.log('path', htmlPath);
+  //   res.sendFile(htmlPath);
+  // });
+
+  const getCacheforID = (req, res) => {
+    redis.get(req.params.id, (err, result) => {
+      if (result) {
+        // console.log('inside redis', result);
+        res.send(result);
+      } else {
+        model.getRelatedProductsByID(req.params.id, (error, data) => {
+          if (error) {
+            res.status(500).send(error);
+          } else {
+            // console.log(process.pid);
+            res.status(200).send(data);
+          }
+        });
+      }
+    });
+  };
+
+  const getCacheforName = (req, res) => {
+    redis.get(req.params.name, (err, result) => {
+      if (result) {
+        res.send(result);
+      } else {
+        model.getRelatedProductsByName(req.params.name, (error, data) => {
+          if (error) {
+            res.status(500).send(error);
+          } else {
+            res.status(200).send(data);
+          }
+        });
+      }
+    });
+  };
+
+  // get
+  app.get('/:id', getCacheforID);
+  app.get('/name/:name', getCacheforName);
+
+  app.listen(port, () => {
+    console.log(`server running at: http://localhost:${port}`);
+  });
+}
