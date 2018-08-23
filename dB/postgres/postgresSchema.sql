@@ -25,7 +25,7 @@ CREATE TABLE similar_products_relation (
 
 CREATE INDEX relation_on_id ON similar_products_relation (id, similarID);
 
-COPY products (id,name,url,rating,reviews,price,isPrime)
+COPY products (id,name,url,ratinxg,reviews,price,isPrime)
 FROM '/Users/OzgeYurtsever/Dev/SDC/similar-products/data/randomData1.csv'
 DELIMITER ',' CSV HEADER;
 

@@ -42,7 +42,8 @@ const writeCSV = (noOfChunks, base) => {
       generateRelation(i * base + 1, (i + 1) * base, base * noOfChunks),
     );
     const data = dataArr.join('\n');
-    fs.writeFile(`./data/randomRelation${i + 1}.csv`, data, (err) => {
+    // fs.writeFile(`./data/randomRelation${i + 1}.csv`, data, (err) => {
+    fs.writeFile(`./randomRelation${i + 1}.csv`, data, (err) => {
       if (err) {
         console.log('error in writing the csv: ', err);
       } else {
@@ -66,5 +67,5 @@ const writeSQL = (noOfChunks) => {
   }
 };
 
-writeSQL(NO_OF_CHUNKS);
-// writeCSV(NO_OF_CHUNKS, DATA_BASE);
+// writeSQL(NO_OF_CHUNKS);
+writeCSV(NO_OF_CHUNKS, DATA_BASE);

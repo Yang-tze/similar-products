@@ -43,6 +43,7 @@ const generateSimilarProducts = (base, times) => {
     const dataArr = [COLS.join(',')];
     dataArr.push(generateData(i * base, (i + 1) * base));
     const data = dataArr.join('\n');
+    // fs.writeFile(`./data/randomData${i + 1}.csv`, data, (err) => {
     fs.writeFile(`./data/randomData${i + 1}.csv`, data, (err) => {
       if (err) {
         console.log('error in writing the csv: ', err);

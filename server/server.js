@@ -38,7 +38,7 @@ if (cluster.isMaster) {
   //   res.sendFile(htmlPath);
   // });
 
-  const getCache = (req, res) => {
+  const getCacheforID = (req, res) => {
     redis.get(req.params.id, (err, result) => {
       if (result) {
         // console.log('inside redis', result);
@@ -56,8 +56,25 @@ if (cluster.isMaster) {
     });
   };
 
+  const getCacheforName = (req, res) => {
+    redis.get(req.params.name, (err, result) => {
+      if (result) {
+        res.send(result);
+      } else {
+        model.getRelatedProductsByName(req.params.name, (error, data) => {
+          if (error) {
+            res.status(500).send(error);
+          } else {
+            res.status(200).send(data);
+          }
+        });
+      }
+    });
+  };
+
   // get
-  app.get('/:id', getCache);
+  app.get('/:id', getCacheforID);
+  app.get('/name/:name', getCacheforName);
 
   app.listen(port, () => {
     console.log(`server running at: http://localhost:${port}`);
